@@ -40,7 +40,8 @@ public class StreamingDedupeTest extends KafkaUtilsBaseTest {
                 .config("spark.sql.streaming.stateStore.providerClass",
                         "com.idirze.bigdata.examples.streaming.continuous.provider.CustomStateStoreProvider")
                // Configure the state store backend class (in memory, Hbase, etc)
-                .config("spark.sql.streaming.stateStore.stateStoreClass", "com.idirze.bigdata.examples.streaming.continuous.state.memory.MemoryStateStore")
+                .config("spark.sql.streaming.stateStore.stateStoreBackend",
+                        "memory")
 
                 .getOrCreate();
 
@@ -59,7 +60,7 @@ public class StreamingDedupeTest extends KafkaUtilsBaseTest {
         int nbRecords = 1000;
         int nbDuplicates = 245;
 
-        // Insert some smoke date into the input kafka topic:
+        // Insert some smoke data into the input kafka topic:
         // #nbRecords + nbDuplicates records into the input topic
         produceSmokeDataWithSparseDuplicates(nbRecords, nbDuplicates, TOPIC_IN_SPARSE, "key", "value");
 
@@ -146,9 +147,9 @@ public class StreamingDedupeTest extends KafkaUtilsBaseTest {
     }
 
     private Dataset<Row> deduplicateStream(Dataset<Row> stream) {
-        // Your deduplication logic here - Business code
+        // Your deduplication logic here
         return stream.selectExpr("key", "value")
-                // Dedublicate based on the hash of the value
+                // Dedublicate based on the hash of the value (hash should not be used => collision, here for testing!)
                 .withColumn("contentId", hash(col("value")))
                 //.withWatermark("event_time", "15 minutes") => Add the event time to limit the search scope & prevent OOM Errors
                 .dropDuplicates("contentId")

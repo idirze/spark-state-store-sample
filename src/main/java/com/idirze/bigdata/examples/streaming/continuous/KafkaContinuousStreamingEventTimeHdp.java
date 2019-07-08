@@ -15,9 +15,9 @@ public class KafkaContinuousStreamingEventTimeHdp {
     //private static final String KAFKA_BROKER_LIST = "sandbox-hdp.hortonworks.com:6667";
     public static final String KAFKA_BROKER_LIST = "192.168.0.24:9092";
 
-    public static final String TOPIC_IN = "topic-in6";
+    public static final String TOPIC_IN = "topic-in7";
     public static final String TOPIC_OUT = "topic-out";
-    private static final String CHECKPOINT_DIR = "/tmp/spark/checkpoint";
+    private static final String CHECKPOINT_DIR = "data/spark/checkpoint";
 
     /**
      * Use checkpointing for recovery
@@ -31,7 +31,9 @@ public class KafkaContinuousStreamingEventTimeHdp {
                 .appName("Stocks-FileStructuredStreaming")
                .config("spark.sql.shuffle.partitions", "1")
                 .config("spark.sql.streaming.stateStore.providerClass",
-                        "com.idirze.bigdata.examples.streaming.continuous.provider.MemoryStateStoreProvider")
+                        "com.idirze.bigdata.examples.streaming.continuous.provider.CustomStateStoreProvider")
+                .config("spark.sql.streaming.stateStore.stateStoreBackend",
+                        "memory")
                 .getOrCreate();
 
         Dataset<Row> stockEvents = sparkSession
@@ -55,7 +57,7 @@ public class KafkaContinuousStreamingEventTimeHdp {
                // .dropDuplicates("contentId")// the dedup key
                 .dropDuplicates("value")// the dedup key
                 .writeStream()
-                .format("kafka")
+                .format("console")
                 .option("kafka.bootstrap.servers", KAFKA_BROKER_LIST)
                 .option("topic", TOPIC_OUT)
                 .option("value.converter.schemas.enable", "false")

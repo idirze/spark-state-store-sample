@@ -11,7 +11,6 @@ import scala.Option;
 import scala.collection.Seq;
 
 import static com.idirze.bigdata.examples.streaming.continuous.constants.StoreState.Updating;
-import static com.idirze.bigdata.examples.streaming.continuous.utils.StateStoreUtils.createStateStore;
 import static com.idirze.bigdata.examples.streaming.continuous.utils.StateStoreUtils.getConfAsString;
 import static scala.collection.JavaConversions.asScalaBuffer;
 
@@ -39,8 +38,7 @@ public class CustomStateStoreProvider implements StateStoreProvider, StateStoreC
         this.storeConf = storeConfs;
         this.hadoopConf = hadoopConf;
 
-        this.stateStore = createStateStore(getConfAsString(storeConf, STATE_STORE_CLASS),
-                stateStoreId,
+        this.stateStore = new CustomStateStore(stateStoreId,
                 keySchema,
                 valueSchema,
                 storeConf,

@@ -1,7 +1,7 @@
 package com.idirze.bigdata.examples.streaming.continuous.utils;
 
 import com.idirze.bigdata.examples.streaming.continuous.exception.StateStoreInstantiationException;
-import com.idirze.bigdata.examples.streaming.continuous.state.CustomStateStore;
+import com.idirze.bigdata.examples.streaming.continuous.state.CustomStateStoreBackend;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.spark.sql.execution.streaming.state.StateStoreConf;
 import org.apache.spark.sql.execution.streaming.state.StateStoreId;
@@ -41,9 +41,9 @@ public class StateStoreUtilsTest extends UnsafeRowUtilsMock {
                 1,
                 "create_custom_state_store_test");
 
-        CustomStateStore stateStore = StateStoreUtils
-                .createStateStore("com.idirze.bigdata.examples.streaming.continuous.state.memory.MemoryStateStore"
-                        , stateStoreId, keySchema, valueSchema, storeConf, hadoopConf);
+        CustomStateStoreBackend stateStore = StateStoreUtils
+                .createStateStoreBackand("com.idirze.bigdata.examples.streaming.continuous.state.memory.MemoryStateStoreBackend"
+                        , stateStoreId, keySchema, valueSchema);
 
         stateStore.put(makeKeyRow("key1"), makeValueRow("value1"));
         stateStore.put(makeKeyRow("key2"), makeValueRow("value2"));
@@ -67,7 +67,7 @@ public class StateStoreUtilsTest extends UnsafeRowUtilsMock {
         assertThrows(StateStoreInstantiationException.class,
                 () ->
                         StateStoreUtils
-                                .createStateStore("com.idirze.bigdata.examples.streaming.continuous.state.memory.NoStateStore"
+                                .createStateStoreBackand("com.idirze.bigdata.examples.streaming.continuous.state.memory.NoStateStore"
                                         , null, null, null, null, null)
         );
     }

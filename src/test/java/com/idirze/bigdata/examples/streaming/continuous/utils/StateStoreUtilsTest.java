@@ -1,6 +1,6 @@
 package com.idirze.bigdata.examples.streaming.continuous.utils;
 
-import com.idirze.bigdata.examples.streaming.continuous.exception.StateStoreInstantiationException;
+import com.idirze.bigdata.examples.streaming.continuous.exception.StateStoreBackendInstantiationException;
 import com.idirze.bigdata.examples.streaming.continuous.state.CustomStateStoreBackend;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.spark.sql.execution.streaming.state.StateStoreConf;
@@ -64,7 +64,7 @@ public class StateStoreUtilsTest extends UnsafeRowUtilsMock {
     @Test()
     @DisplayName("Throw StateStoreInstantiationException if the state store impl class is not found")
     public void should_throw_StateStoreInstantiationException_when_state_store_class_not_found_test() {
-        assertThrows(StateStoreInstantiationException.class,
+        assertThrows(StateStoreBackendInstantiationException.class,
                 () ->
                         StateStoreUtils
                                 .createStateStoreBackand("com.idirze.bigdata.examples.streaming.continuous.state.memory.NoStateStore"

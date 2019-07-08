@@ -1,9 +1,7 @@
 package com.idirze.bigdata.examples.streaming.continuous.utils;
 
-import com.idirze.bigdata.examples.streaming.continuous.exception.StateStoreInstantiationException;
-import com.idirze.bigdata.examples.streaming.continuous.state.CustomStateStore;
+import com.idirze.bigdata.examples.streaming.continuous.exception.StateStoreBackendInstantiationException;
 import com.idirze.bigdata.examples.streaming.continuous.state.CustomStateStoreBackend;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.spark.sql.execution.streaming.state.StateStoreConf;
 import org.apache.spark.sql.execution.streaming.state.StateStoreId;
 import org.apache.spark.sql.types.StructType;
@@ -25,7 +23,7 @@ public class StateStoreUtils {
             Constructor constructor = clazz.getConstructor(argsClass);
             return (CustomStateStoreBackend) constructor.newInstance(args);
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException | ClassNotFoundException | NoSuchMethodException e) {
-            throw new StateStoreInstantiationException("Failed to instantiate stateStore class: " + stateStoreClass, e);
+            throw new StateStoreBackendInstantiationException("Failed to instantiate stateStore class: " + stateStoreClass, e);
         }
     }
 

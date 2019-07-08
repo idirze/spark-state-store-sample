@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.idirze.bigdata.examples.streaming.continuous.constants.StateStoreConstants.STATE_STORE_BACKEND;
 import static com.idirze.bigdata.examples.streaming.continuous.constants.StoreState.Committed;
 import static com.idirze.bigdata.examples.streaming.continuous.constants.StoreState.Updating;
-import static com.idirze.bigdata.examples.streaming.continuous.state.StateStoreBackendType.backendOf;
+import static com.idirze.bigdata.examples.streaming.continuous.constants.StateStoreBackendType.backendOf;
 import static com.idirze.bigdata.examples.streaming.continuous.utils.StateStoreUtils.createStateStoreBackand;
 import static com.idirze.bigdata.examples.streaming.continuous.utils.StateStoreUtils.getConfAsString;
 
